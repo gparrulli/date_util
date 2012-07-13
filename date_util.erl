@@ -17,12 +17,13 @@
 %%====================================================================
 
 string_to_datetime(DateString) ->
-    TT = [HasTime || HasTime <-  DateString, HasTime =:= ":" ],
+    TT = [HasTime || HasTime <-  DateString, HasTime =:= 58 ],
     case TT of
-    [] -> {ok,[A, B, C],_} =io_lib:fread("~d/~d/~d", DateString),
+    [] ->
+					{ok,[A, B, C],_} =io_lib:fread("~d/~d/~d", DateString),
           {Hours,Minutes,Seconds} = {0,0,0};
     _Else ->
-          {ok,[A, B, C,Hours,Minutes,Seconds],_} =io_lib:fread("~d/~d/~d ~d:~d:~d", DateString)
+				  {ok,[A, B, C,Hours,Minutes,Seconds],_} =io_lib:fread("~d/~d/~d ~d:~d:~d", DateString)
     end,
     {validate_date([A, B, C]),{Hours,Minutes,Seconds}}.
 
@@ -175,9 +176,6 @@ dateadd(year,Duration,StringDate) ->
 %% Internal functions
 %%====================================================================
 
-string_to_date(DateString) ->
-    {ok,[A, B, C],_} =io_lib:fread("~d/~d/~d", DateString),
-    {validate_date([A, B, C]),{0,0,0}}.
 
 validate_date([A, B, C]) when A > 12, B < 13 ->
     {A,B,C};
