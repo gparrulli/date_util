@@ -98,15 +98,13 @@ datediff(year,From,To) ->
     {{Tyear,_TMonth,_Tday},_} = string_to_datetime(To),
     Tyear - Fyear.
 
-dateadd(day,Duration,{{Y,Mm,D}, {H, M, S}})->
-    NowSecs = calendar:datetime_to_gregorian_seconds({{Y,Mm,D}, {H, M, S}}),
-    Twenty_Four_Hours_From_Now = 24 * Duration * 60 * 60,
-    NewTimeSecs = NowSecs + Twenty_Four_Hours_From_Now,
-    calendar:gregorian_seconds_to_datetime(NewTimeSecs);
-
 dateadd(second,Duration,{{Y,Mm,D}, {H, M, S}})->
     NewTimeSecs = calendar:datetime_to_gregorian_seconds({{Y,Mm,D}, {H, M, S}}) + Duration,
     calendar:gregorian_seconds_to_datetime(NewTimeSecs);
+
+dateadd(second,Duration,Stringdate)->
+		{{Y,Mm,D}, {H, M, S}} = string_to_datetime(Stringdate),
+    dateadd(second,Duration,{{Y,Mm,D}, {H, M, S}});
 
 dateadd(minute,Duration,{{Y,Mm,D}, {H, M, S}})->
     NowSecs = calendar:datetime_to_gregorian_seconds({{Y,Mm,D}, {H, M, S}}),
@@ -114,11 +112,29 @@ dateadd(minute,Duration,{{Y,Mm,D}, {H, M, S}})->
     NewTimeSecs = NowSecs + Total_Seconds_Now,
     calendar:gregorian_seconds_to_datetime(NewTimeSecs);
 
+dateadd(minute,Duration,Stringdate)->
+		{{Y,Mm,D}, {H, M, S}} = string_to_datetime(Stringdate),
+    dateadd(minute,Duration,{{Y,Mm,D}, {H, M, S}});
+
 dateadd(hour,Duration,{{Y,Mm,D}, {H, M, S}})->
     NowSecs = calendar:datetime_to_gregorian_seconds({{Y,Mm,D}, {H, M, S}}),
     Total_Hours_From_Now =  Duration * 60 * 60,
     NewTimeSecs = NowSecs + Total_Hours_From_Now,
     calendar:gregorian_seconds_to_datetime(NewTimeSecs);
+
+dateadd(hour,Duration,Stringdate)->
+		{{Y,Mm,D}, {H, M, S}} = string_to_datetime(Stringdate),
+    dateadd(hour,Duration,{{Y,Mm,D}, {H, M, S}});
+
+dateadd(day,Duration,{{Y,Mm,D}, {H, M, S}})->
+    NowSecs = calendar:datetime_to_gregorian_seconds({{Y,Mm,D}, {H, M, S}}),
+    Twenty_Four_Hours_From_Now = 24 * Duration * 60 * 60,
+    NewTimeSecs = NowSecs + Twenty_Four_Hours_From_Now,
+    calendar:gregorian_seconds_to_datetime(NewTimeSecs);
+
+dateadd(day,Duration,Stringdate)->
+		{{Y,Mm,D}, {H, M, S}} = string_to_datetime(Stringdate),
+    dateadd(day,Duration,{{Y,Mm,D}, {H, M, S}});
 
 dateadd(month,0,Next)->
     Next;
@@ -151,7 +167,7 @@ dateadd(year,Duration,{{Y,Mm,D}, {H, M, S}}) ->
     {{Y+Duration,Mm,D}, {H, M, S}};
 
 dateadd(year,Duration,StringDate) ->
-    {{Y,Mm,D}, {H, M, S}} = string_to_date(StringDate),
+    {{Y,Mm,D}, {H, M, S}} = string_to_datetime(StringDate),
     dateadd(year,Duration,{{Y,Mm,D}, {H, M, S}}).
 
 
