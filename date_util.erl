@@ -128,10 +128,8 @@ dateadd(month,Duration,{{Y,Mm,D}, {H, M, S}})  ->
         true ->
             Next = case Mm - 1 > 0 of
                       true ->
-                          io:format("whats the date: ~p~n",[{fix_day({Y,Mm-1,D}),{H,M,S}}]),
                           calendar:datetime_to_gregorian_seconds({fix_day({Y,Mm-1,D}),{H,M,S}});
                       false ->
-                          io:format("whats the date: ~p~n",[{fix_day({Y-1,12,D}),{H,M,S}}]),
                           calendar:datetime_to_gregorian_seconds({fix_day({Y-1,12,D}),{H,M,S}})
                    end,
             dateadd(month,Duration+1,calendar:gregorian_seconds_to_datetime(Next));
